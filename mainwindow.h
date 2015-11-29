@@ -4,7 +4,9 @@
 #include <QMainWindow>
 
 class QAction;
-class puzzleWidget;
+class PuzzleWidget;
+class QTime;
+class QPixmap;
 
 class MainWindow : public QMainWindow
 {
@@ -12,10 +14,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow();
 
+private slots:
+    void newGame();
+    void saveGame();
+    void setTimerVisible();
+    void aboutQt();
 
 private:
     void createActions();
     void createMenus();
+    void createToolBars();
+    void createContextMenu();
+
+    PuzzleWidget *puzzleWidget;
 
     QAction *sepratorAction;
 

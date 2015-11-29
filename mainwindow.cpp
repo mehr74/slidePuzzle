@@ -1,41 +1,50 @@
 #include <QtWidgets>
+#include <QHBoxLayout>
+#include <QLabel>
 #include "mainwindow.h"
+#include "puzzlewidget.h"
 
 MainWindow::MainWindow()
 {
     createActions();
     createMenus();
+    createToolBars();
+    createContextMenu();
+    puzzleWidget = new PuzzleWidget(this);
+    puzzleWidget->addPieces(QPixmap(QString::fromUtf8(":/images/background.jpg")));
 }
 
 void MainWindow::createActions()
 {
     newAction = new QAction(tr("&New game"), this);
-    newAction->setIcon(QIcon(":/images/new.png"));
+    newAction->setIcon(QIcon(":/icons/images/new.png"));
     newAction->setShortcut(QKeySequence::New);
     newAction->setStatusTip(tr("Start a new game"));
 //    connect(newAction, SIGNAL(triggered()),
 //            this, SLOT(newGame()));
 
     saveAction = new QAction(tr("&Save game"), this);
-    saveAction->setIcon(QIcon(":/images/save.png"));
+    saveAction->setIcon(QIcon(":/icons/images/save.png"));
     saveAction->setShortcut(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save current game"));
 //    connect(saveAction, SIGNAL(triggered()),
 //            this, SLOT(saveGame()));
 
     loadAction = new QAction(tr("&Load game"), this);
-    loadAction->setIcon(QIcon(":/images/load.png"));
+    loadAction->setIcon(QIcon(":/icons/images/load.png"));
     loadAction->setStatusTip(tr("Load a game"));
     loadAction->setShortcut(QKeySequence::Open);
 //    connnect(loadAction, SIGNAL(triggered()),
 //             this, SLOT(loadGame()));
 
     settingsAction = new QAction(tr("&Settings..."), this);
+    settingsAction->setIcon(QIcon(":/icons/images/settings.png"));
     settingsAction->setStatusTip("Open settings window");
 //    connect(settingsAction,( SIGNAL(triggered()),
 //            this, SLOT( settings()));
 
     exitAction = new QAction(tr("E&xit"), this);
+    exitAction->setIcon(QIcon(":/icons/images/exit.png"));
     exitAction->setStatusTip(tr("Close game"));
     connect(exitAction, SIGNAL(triggered()),
             this, SLOT(close()));
@@ -69,11 +78,18 @@ void MainWindow::createActions()
     musicAction->setCheckable(true);
 
     redoAction = new QAction(tr("Redo"), this);
+    redoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/redo.png"));
+
     undoAction = new QAction(tr("Undo"), this);
+    undoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/undo.png"));
+
     aboutAction = new QAction(tr("About"), this);
     aboutQtAction = new QAction(tr("About Qt"), this);
+    aboutAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/help.png"));
+
     aboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
-//    connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    aboutQtAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/info.png"));
+    connect(aboutQtAction, SIGNAL(triggered()), this, SLOT(aboutQt()));
 }
 
 void MainWindow::createMenus()
@@ -87,8 +103,8 @@ void MainWindow::createMenus()
     fileMenu->addAction(exitAction);
 
     controlMenu = menuBar()->addMenu(tr("&Control"));
-    controlMenu->addAction(redoAction);
     controlMenu->addAction(undoAction);
+    controlMenu->addAction(redoAction);
     controlMenu->addSeparator();
     controlMenu->addAction(soundAction);
     controlMenu->addAction(musicAction);
@@ -106,3 +122,37 @@ void MainWindow::createMenus()
     helpMenu->addAction(aboutQtAction);
 
 }
+
+void MainWindow::createToolBars()
+{
+    fileToolBar = addToolBar(tr("&File"));
+    fileToolBar->addAction(newAction);
+    fileToolBar->addAction(saveAction);
+    fileToolBar->addAction(loadAction);
+
+    controlToolBar = addToolBar(tr("&Control"));
+
+    controlToolBar->addAction(undoAction);
+    controlToolBar->addAction(redoAction);
+}
+
+void MainWindow::createContextMenu()
+{
+    QLabel *label = new QLabel("salam");
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->addWidget(label);
+    setLayout(layout);
+    QWidget *widget = new QWidget;
+    widget->setLayout(layout);
+    setCentralWidget(widget);
+}
+
+void MainWindow::aboutQt()
+{
+    QMessageBox::aboutQt(this);
+}
+
+void MainWindow::newGame(){}
+void MainWindow::saveGame(){}
+
+void MainWindow::setTimerVisible(){}
