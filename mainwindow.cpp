@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QDockWidget>
 #include "mainwindow.h"
 #include "puzzlewidget.h"
 #include "newgame.h"
@@ -11,14 +12,11 @@ MainWindow::MainWindow()
     createMenus();
     createToolBars();
     createContextMenu();
+    createDockWindows();
     puzzleWidget = new PuzzleWidget(this);
     puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
     QHBoxLayout *layout = new QHBoxLayout();
     layout->addWidget(puzzleWidget);
-    QLabel *label = new QLabel();
-//    label->setPixmap(QPixmap(QString::fromUtf8(":/images/images/background.jpg")));
-    layout->addWidget(label);
-    setLayout(layout);
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
@@ -163,6 +161,39 @@ void MainWindow::createToolBars()
 void MainWindow::createContextMenu()
 {
 
+}
+
+void MainWindow::createDockWindows()
+{
+    timerDock = new QDockWidget(tr("Timer"), this);
+    QLabel *timerImg = new QLabel();
+    timerImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/timer.png")));
+    QLabel *timerClock = new QLabel("<h2>00:00:00</h2>");
+    QHBoxLayout *timerLayout = new QHBoxLayout();
+    timerLayout->addWidget(timerImg);
+    timerLayout->addWidget(timerClock);
+    QWidget *timerWidget = new QWidget();
+    timerWidget->setLayout(timerLayout);
+    timerDock->setWidget(timerWidget);
+    timerDock->setFixedSize(240, 200);
+    timerDock->setTitleBarWidget(new QLabel("<h2>Timer</h2>"));
+    addDockWidget(Qt::RightDockWidgetArea, timerDock);
+
+    moveDock = new QDockWidget(tr("Move"), this);
+    moveDock->setAllowedAreas(Qt::LeftDockWidgetArea);
+    QLabel *moveImg = new QLabel();
+    moveImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/move.png")));
+    QLabel *moveLabel = new QLabel("<h2>000</h2>");
+    QHBoxLayout *moveLayout = new QHBoxLayout();
+    moveLayout->addWidget(moveImg);
+    moveLayout->addWidget(moveLabel);
+    QWidget *moveWidget = new QWidget();
+    moveWidget->setLayout(moveLayout);
+    moveDock->setWidget(moveWidget);
+    moveDock->setTitleBarWidget(new QLabel("<h2>Move</h2>"));
+    // TODO : change font of timer and move to nice one
+    moveDock->setFixedSize(240,200);
+    addDockWidget(Qt::RightDockWidgetArea, moveDock);
 }
 
 void MainWindow::aboutQt()

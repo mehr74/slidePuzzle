@@ -29,6 +29,7 @@ private:
     void createMenus();
     void createToolBars();
     void createContextMenu();
+    void createDockWindows();
 
     PuzzleWidget *puzzleWidget;
 
@@ -40,6 +41,9 @@ private:
 
     QToolBar *fileToolBar;
     QToolBar *controlToolBar;
+
+    QDockWidget *timerDock;
+    QDockWidget *moveDock;
 
     QAction *newAction;
     QAction *saveAction;
