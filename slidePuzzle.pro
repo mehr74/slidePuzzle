@@ -8,11 +8,16 @@ DEPENDPATH += .
 
 SOURCES += main.cpp \
     mainwindow.cpp \
-    puzzlewidget.cpp
+    puzzlewidget.cpp \
+    newgame.cpp
 
 HEADERS += \
     mainwindow.h \
-    puzzlewidget.h
+    puzzlewidget.h \
+    newgame.h
 
 RESOURCES += \
     slidepuzzle.qrc
+
+FORMS += \
+    newgame.ui

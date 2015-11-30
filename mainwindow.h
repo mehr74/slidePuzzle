@@ -7,6 +7,7 @@ class QAction;
 class PuzzleWidget;
 class QTime;
 class QPixmap;
+class NewGame;
 
 class MainWindow : public QMainWindow
 {
@@ -19,6 +20,9 @@ private slots:
     void saveGame();
     void setTimerVisible();
     void aboutQt();
+    void changeFullScreenMode(bool screenMode);
+    void changeFileToolBarVisibility(bool fileToolBarMode);
+    void changeControlToolBarVisibility(bool controlToolBarMode);
 
 private:
     void createActions();
@@ -27,8 +31,6 @@ private:
     void createContextMenu();
 
     PuzzleWidget *puzzleWidget;
-
-    QAction *sepratorAction;
 
     QMenu *fileMenu;
     QMenu *controlMenu;

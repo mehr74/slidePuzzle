@@ -3,6 +3,7 @@
 #include <QLabel>
 #include "mainwindow.h"
 #include "puzzlewidget.h"
+#include "newgame.h"
 
 MainWindow::MainWindow()
 {
@@ -11,7 +12,16 @@ MainWindow::MainWindow()
     createToolBars();
     createContextMenu();
     puzzleWidget = new PuzzleWidget(this);
-    puzzleWidget->addPieces(QPixmap(QString::fromUtf8(":/images/background.jpg")));
+    puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
+    QHBoxLayout *layout = new QHBoxLayout();
+    layout->addWidget(puzzleWidget);
+    QLabel *label = new QLabel();
+//    label->setPixmap(QPixmap(QString::fromUtf8(":/images/images/background.jpg")));
+    layout->addWidget(label);
+    setLayout(layout);
+    QWidget *widget = new QWidget;
+    widget->setLayout(layout);
+    setCentralWidget(widget);
 }
 
 void MainWindow::createActions()
@@ -20,8 +30,8 @@ void MainWindow::createActions()
     newAction->setIcon(QIcon(":/icons/images/new.png"));
     newAction->setShortcut(QKeySequence::New);
     newAction->setStatusTip(tr("Start a new game"));
-//    connect(newAction, SIGNAL(triggered()),
-//            this, SLOT(newGame()));
+    connect(newAction, SIGNAL(triggered()),
+            this, SLOT(newGame()));
 
     saveAction = new QAction(tr("&Save game"), this);
     saveAction->setIcon(QIcon(":/icons/images/save.png"));
@@ -52,12 +62,24 @@ void MainWindow::createActions()
     fullScreenAction = new QAction(tr("Fullscreen"), this);
     fullScreenAction->setShortcut(QKeySequence::FullScreen);
     fullScreenAction->setCheckable(true);
+    fullScreenAction->setStatusTip(tr("Change the screen mode to fullscreen"
+                                      " or default view"));
+    connect(fullScreenAction, SIGNAL(toggled(bool)),
+            this, SLOT(changeFullScreenMode(bool)));
 
     fileToolBarAction = new QAction(tr("File Toolbar"), this);
     fileToolBarAction->setCheckable(true);
+    fileToolBarAction->setStatusTip(tr("Show or hide file toolbar"));
+    fileToolBarAction->setChecked(true);
+    connect(fileToolBarAction, SIGNAL(toggled(bool)),
+            this, SLOT(changeFileToolBarVisibility(bool)));
 
     controlToolBarAction = new QAction(tr("Control Toolbar"), this);
     controlToolBarAction->setCheckable(true);
+    controlToolBarAction->setStatusTip(tr("Show or hide control toolbar"));
+    controlToolBarAction->setChecked(true);
+    connect(controlToolBarAction, SIGNAL(toggled(bool)),
+            this, SLOT(changeControlToolBarVisibility(bool)));
 
     timerToolBarAction = new QAction(tr("Timer ToolBar"), this);
     timerToolBarAction->setCheckable(true);
@@ -79,9 +101,11 @@ void MainWindow::createActions()
 
     redoAction = new QAction(tr("Redo"), this);
     redoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/redo.png"));
+    redoAction->setShortcut(QKeySequence::Redo);
 
     undoAction = new QAction(tr("Undo"), this);
     undoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/undo.png"));
+    undoAction->setShortcut(QKeySequence::Undo);
 
     aboutAction = new QAction(tr("About"), this);
     aboutQtAction = new QAction(tr("About Qt"), this);
@@ -138,13 +162,7 @@ void MainWindow::createToolBars()
 
 void MainWindow::createContextMenu()
 {
-    QLabel *label = new QLabel("salam");
-    QHBoxLayout *layout = new QHBoxLayout();
-    layout->addWidget(label);
-    setLayout(layout);
-    QWidget *widget = new QWidget;
-    widget->setLayout(layout);
-    setCentralWidget(widget);
+
 }
 
 void MainWindow::aboutQt()
@@ -152,7 +170,37 @@ void MainWindow::aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::newGame(){}
+void MainWindow::newGame()
+{
+    NewGame dialog(this);
+    dialog.exec();
+}
+
+void MainWindow::changeFullScreenMode(bool screenMode)
+{
+    if(screenMode)
+        this->showFullScreen();
+    else
+        this->showNormal();
+}
+
+void MainWindow::changeFileToolBarVisibility(bool fileToolBarMode)
+{
+    if(!fileToolBarMode)
+        this->fileToolBar->hide();
+    else
+        this->fileToolBar->show();
+}
+
+void MainWindow::changeControlToolBarVisibility(bool controlToolBarMode)
+{
+    if(!controlToolBarMode)
+        this->controlToolBar->hide();
+    else
+        this->controlToolBar->show();
+}
+
+
 void MainWindow::saveGame(){}
 
 void MainWindow::setTimerVisible(){}
