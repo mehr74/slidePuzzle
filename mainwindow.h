@@ -9,6 +9,7 @@ class QTime;
 class QPixmap;
 class NewGame;
 class QTextEdit;
+class QLabel;
 
 class MainWindow : public QMainWindow
 {
@@ -19,6 +20,7 @@ public:
 signals:
     void puzzleCompleted();
     void blockMoved();
+
 private slots:
     void newGame();
     void saveGame();
@@ -27,6 +29,8 @@ private slots:
     void changeFullScreenMode(bool screenMode);
     void changeFileToolBarVisibility(bool fileToolBarMode);
     void changeControlToolBarVisibility(bool controlToolBarMode);
+    void startPuzzleTimer();
+    void changeCounterText(int counter);
 
 protected:
    void keyPressEvent(QKeyEvent *event);
@@ -54,7 +58,11 @@ private:
     QDockWidget *timerDock;
     QDockWidget *moveDock;
 
+    QLabel *counterLabel;
+
     QTextEdit *statusLog;
+
+    QTimer *puzzleTimer;
 
     QAction *newAction;
     QAction *saveAction;

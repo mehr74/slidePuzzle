@@ -9,13 +9,37 @@ Movements::Movements()
 
 void Movements::addMove(const QRect &prev, const QRect &next)
 {
-    previousRects.append(prev);
-    nextRects.append(next);
+    if(top < previousRects.size())
+    {
+        previousRects[top] = prev;
+        nextRects[top] = next;
+    }
+    else
+    {
+        previousRects.append(prev);
+        nextRects.append(next);
+    }
+    top++;
 }
 
-void Movements::popMove(QRect *prevRect, QRect *nextRect)
+int Movements::popMove(QRect *prevRect, QRect *nextRect)
 {
+    if(top <= 0)
+        return -1;
+    top--;
+    *prevRect = previousRects[top];
+    *nextRect = nextRects[top];
+    return 0;
+}
 
-    *prevRect = previousRects.back();
-    *nextRect = nextRects.back();
+int Movements::incSp(QRect *prevRect, QRect *nextRect)
+{
+    if(top < previousRects.size())
+    {
+        top++;
+        *prevRect = previousRects[top];
+        *nextRect = nextRects[top];
+        return 0;
+    }
+    return -1;
 }

@@ -8,6 +8,7 @@
 PuzzleWidget::PuzzleWidget(QWidget *parent, const QSize size, const QPoint pieceNum)
     : QWidget(parent)
 {
+    isGameStarted = false;
     setAcceptDrops(true);
     this->relation = pieceNum;
     pnt.setX(size.width()/relation.x());
@@ -69,6 +70,8 @@ void PuzzleWidget::paintEvent(QPaintEvent *event)
 
 void PuzzleWidget::scramble(int diff)
 {
+    if(isGameStarted)
+        return;
     qsrand(QCursor::pos().x() ^ QCursor::pos().y());
     moves = 0;
     int maxid = relation.x()*relation.y() - 1;
@@ -139,6 +142,13 @@ void PuzzleWidget::scramble(int diff)
 
 void PuzzleWidget::mousePressEvent(QMouseEvent *event)
 {
+    if(isGameStarted == false)
+    {
+        scramble();
+        isGameStarted = true;
+        emit gameStarted();
+        return;
+    }
     QRect square = targetSquare(event->pos());
     int found = findPiece(square);
 
@@ -155,10 +165,13 @@ void PuzzleWidget::mousePressEvent(QMouseEvent *event)
     QRect newpos = findPieceToMove(square);
     if (newpos == square) {
         emit blockMoved();
+        moves--;
     }
 
     history->addMove(square, newpos);
     pieceRects.insert(found, newpos);
+    moves++;
+    moveCounter(moves);
 
     if (inPlace == (relation.x()*relation.y() - 1))
         emit puzzleCompleted();
@@ -189,7 +202,7 @@ void PuzzleWidget::keyPressed(int keyPressed)
     QRect *movingPiece;
     int movingId;
 
-    if(keyPressed == Qt::Key_D)
+    if(keyPressed == Qt::Key_D || keyPressed == Qt::RightArrow)
     {
         if(freePiece.x() > 0)
         {
@@ -242,6 +255,8 @@ void PuzzleWidget::keyPressed(int keyPressed)
         return;
     }
 
+    moves++;
+    emit moveCounter(moves);
     history->addMove(*movingPiece, freePiece);
     movingId = findPiece(*movingPiece);
     pieceRects.removeAt(movingId);
@@ -285,10 +300,30 @@ QRect PuzzleWidget::findPieceToMove(const QRect found) const
 
 void PuzzleWidget::undo(void)
 {
-    QRect moveRect;
-    QRect targetRect;
-    history->popMove(&moveRect, &targetRect);
-    pieceRects.removeAt(findPiece(targetRect));
-    pieceRects.insert(findPiece(targetRect), moveRect);
-    update();
+    QRect prev;
+    QRect next;
+    if(!history->popMove(&prev, &next))
+    {
+        int pieceNum = findPiece(next);
+        pieceRects.removeAt(pieceNum);
+        pieceRects.insert(pieceNum, prev);
+        moves--;
+        emit moveCounter(moves);
+        update();
+    }
+}
+
+void PuzzleWidget::redo(void)
+{
+    QRect prev;
+    QRect next;
+    if(!history->incSp(&prev, &next))
+    {
+        int pieceNum = findPiece(prev);
+        pieceRects.removeAt(pieceNum);
+        pieceRects.insert(pieceNum, next);
+        moves++;
+        emit moveCounter(moves);
+        update();
+    }
 }

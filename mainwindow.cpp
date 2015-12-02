@@ -13,7 +13,6 @@ MainWindow::MainWindow()
 {
     puzzleWidget = new PuzzleWidget(this);
     puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
-    puzzleWidget->scramble();
 
     createActions();
     createMenus();
@@ -194,10 +193,14 @@ void MainWindow::createDockWindows()
     moveDock->setAllowedAreas(Qt::LeftDockWidgetArea);
     QLabel *moveImg = new QLabel();
     moveImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/move.png")));
-    QLabel *moveLabel = new QLabel("<h2>000</h2>");
+    counterLabel = new QLabel("<h2>000</h2>");
+    connect(puzzleWidget, SIGNAL(moveCounter(int)),
+            this, SLOT(changeCounterText(int)));
+    connect(puzzleWidget, SIGNAL(gameStarted()),
+            this, SLOT(startPuzzleTimer()));
     QHBoxLayout *moveLayout = new QHBoxLayout();
     moveLayout->addWidget(moveImg);
-    moveLayout->addWidget(moveLabel);
+    moveLayout->addWidget(counterLabel);
     QWidget *moveWidget = new QWidget();
     moveWidget->setLayout(moveLayout);
     moveDock->setWidget(moveWidget);
@@ -269,4 +272,17 @@ void MainWindow::setTimerVisible(){}
 void MainWindow::appendToLog(QString *string) const
 {
     statusLog->append(*string);
+}
+
+void MainWindow::changeCounterText(int counter)
+{
+    QString str = QString("%1").arg(counter, 3, 10, QChar('0'));
+    str.append("</h2>");
+    str.insert(0, QString("<h2>"));
+    counterLabel->setText(str);
+}
+
+void MainWindow::startPuzzleTimer()
+{
+
 }

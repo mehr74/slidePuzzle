@@ -24,10 +24,13 @@ public:
 
 public slots:
       void undo(void);
+      void redo(void);
 
 signals:
    void puzzleCompleted();
    void blockMoved();
+   void moveCounter(int moves);
+   void gameStarted();
 
 protected:
    void paintEvent(QPaintEvent *);
@@ -48,7 +51,7 @@ private:
    QPoint relation;
    QSize *widgetSize;
    Movements *history;
-
+   bool isGameStarted;
    int moves;
 };
 

@@ -10,10 +10,12 @@ class Movements
 public:
     Movements();
     void addMove(const QRect &prev, const QRect &next);
-    void popMove(QRect *prevRect, QRect *nextRect);
+    int popMove(QRect *prevRect, QRect *nextRect);
+    int incSp(QRect *prevRect, QRect *nextRect);
 private:
     QList<QRect> previousRects;
     QList<QRect> nextRects;
+    int top = 0;
 };
 
 
