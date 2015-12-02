@@ -8,6 +8,7 @@
 #include <QMouseEvent>
 
 class MainWindow;
+class Movements;
 
 class PuzzleWidget : public QWidget
 {
@@ -20,6 +21,9 @@ public:
    // TODO : use an enum to specify the game difficulty
    void scramble(int diff = 0);
       void keyPressed(int key);
+
+public slots:
+      void undo(void);
 
 signals:
    void puzzleCompleted();
@@ -43,6 +47,7 @@ private:
    QPoint pnt;
    QPoint relation;
    QSize *widgetSize;
+   Movements *history;
 
    int moves;
 };

@@ -11,14 +11,16 @@ SOURCES += main.cpp \
     puzzlewidget.cpp \
     newgame.cpp \
     savegame.cpp \
-    loadgame.cpp
+    loadgame.cpp \
+    movements.cpp
 
 HEADERS += \
     mainwindow.h \
     puzzlewidget.h \
     newgame.h \
     savegame.h \
-    loadgame.h
+    loadgame.h \
+    movements.h
 
 RESOURCES += \
     slidepuzzle.qrc

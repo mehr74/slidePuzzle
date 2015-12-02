@@ -3,6 +3,7 @@
 #include <QMimeData>
 #include <QDrag>
 #include "puzzlewidget.h"
+#include "movements.h"
 
 PuzzleWidget::PuzzleWidget(QWidget *parent, const QSize size, const QPoint pieceNum)
     : QWidget(parent)
@@ -14,6 +15,7 @@ PuzzleWidget::PuzzleWidget(QWidget *parent, const QSize size, const QPoint piece
     widgetSize = new QSize(size.width(), size.height());
     setMinimumSize(size);
     setMaximumSize(size);
+    history = new Movements;
     moves = 0;
 }
 
@@ -144,7 +146,6 @@ void PuzzleWidget::mousePressEvent(QMouseEvent *event)
         return;
 
     QPoint location = pieceLocations[found];
-    QPixmap pixmap = piecePixmaps[found];
     pieceRects.removeAt(found);
 
     // If the user change the position of a right piece ...
@@ -152,11 +153,12 @@ void PuzzleWidget::mousePressEvent(QMouseEvent *event)
         inPlace--;
 
     QRect newpos = findPieceToMove(square);
-    if (newpos != square) {
-        square = newpos;
+    if (newpos == square) {
         emit blockMoved();
     }
-    pieceRects.insert(found, square);
+
+    history->addMove(square, newpos);
+    pieceRects.insert(found, newpos);
 
     if (inPlace == (relation.x()*relation.y() - 1))
         emit puzzleCompleted();
@@ -239,6 +241,8 @@ void PuzzleWidget::keyPressed(int keyPressed)
     {
         return;
     }
+
+    history->addMove(*movingPiece, freePiece);
     movingId = findPiece(*movingPiece);
     pieceRects.removeAt(movingId);
     pieceRects.insert(movingId, freePiece);
@@ -277,4 +281,14 @@ QRect PuzzleWidget::findPieceToMove(const QRect found) const
     if (findPiece(oldPos) == -1 && (oldPos.y() >= 0))
         return oldPos;
     return found;
+}
+
+void PuzzleWidget::undo(void)
+{
+    QRect moveRect;
+    QRect targetRect;
+    history->popMove(&moveRect, &targetRect);
+    pieceRects.removeAt(findPiece(targetRect));
+    pieceRects.insert(findPiece(targetRect), moveRect);
+    update();
 }

@@ -11,6 +11,10 @@
 
 MainWindow::MainWindow()
 {
+    puzzleWidget = new PuzzleWidget(this);
+    puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
+    puzzleWidget->scramble();
+
     createActions();
     createMenus();
     createToolBars();
@@ -18,9 +22,7 @@ MainWindow::MainWindow()
     createDockWindows();
     createLog();
     createStatusBar();
-    puzzleWidget = new PuzzleWidget(this);
-    puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
-    puzzleWidget->scramble();
+
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(puzzleWidget);
     layout->addWidget(statusLog);
@@ -111,6 +113,8 @@ void MainWindow::createActions()
     undoAction = new QAction(tr("Undo"), this);
     undoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/undo.png"));
     undoAction->setShortcut(QKeySequence::Undo);
+    connect(undoAction, SIGNAL(triggered()),
+            puzzleWidget, SLOT(undo()));
 
     aboutAction = new QAction(tr("About"), this);
     aboutQtAction = new QAction(tr("About Qt"), this);
