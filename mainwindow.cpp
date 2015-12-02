@@ -2,6 +2,9 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDockWidget>
+#include <QTextEdit>
+#include <QSpacerItem>
+#include <QVBoxLayout>
 #include "mainwindow.h"
 #include "puzzlewidget.h"
 #include "newgame.h"
@@ -13,10 +16,14 @@ MainWindow::MainWindow()
     createToolBars();
     createContextMenu();
     createDockWindows();
+    createLog();
+    createStatusBar();
     puzzleWidget = new PuzzleWidget(this);
     puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
-    QHBoxLayout *layout = new QHBoxLayout();
+    puzzleWidget->scramble();
+    QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(puzzleWidget);
+    layout->addWidget(statusLog);
     QWidget *widget = new QWidget;
     widget->setLayout(layout);
     setCentralWidget(widget);
@@ -196,6 +203,20 @@ void MainWindow::createDockWindows()
     addDockWidget(Qt::RightDockWidgetArea, moveDock);
 }
 
+void MainWindow::createLog()
+{
+    statusLog = new QTextEdit();
+    statusLog->setReadOnly(true);
+    statusLog->setMaximumHeight(100);
+    statusLog->setFrameStyle(3);
+    statusLog->append(tr("<h4>Welcome</h4>"));
+}
+
+void MainWindow::createStatusBar()
+{
+    statusBar()->addWidget(new QLabel("StatusBar"));
+}
+
 void MainWindow::aboutQt()
 {
     QMessageBox::aboutQt(this);
@@ -231,7 +252,17 @@ void MainWindow::changeControlToolBarVisibility(bool controlToolBarMode)
         this->controlToolBar->show();
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    puzzleWidget->keyPressed(event->key());
+}
 
-void MainWindow::saveGame(){}
+void MainWindow::saveGame()
+{}
 
 void MainWindow::setTimerVisible(){}
+
+void MainWindow::appendToLog(QString *string) const
+{
+    statusLog->append(*string);
+}

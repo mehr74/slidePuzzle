@@ -8,13 +8,17 @@ class PuzzleWidget;
 class QTime;
 class QPixmap;
 class NewGame;
+class QTextEdit;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     MainWindow();
-
+    void appendToLog(QString *string)const;
+signals:
+    void puzzleCompleted();
+    void blockMoved();
 private slots:
     void newGame();
     void saveGame();
@@ -24,12 +28,17 @@ private slots:
     void changeFileToolBarVisibility(bool fileToolBarMode);
     void changeControlToolBarVisibility(bool controlToolBarMode);
 
+protected:
+   void keyPressEvent(QKeyEvent *event);
+
 private:
     void createActions();
     void createMenus();
     void createToolBars();
     void createContextMenu();
     void createDockWindows();
+    void createLog();
+    void createStatusBar();
 
     PuzzleWidget *puzzleWidget;
 
@@ -44,6 +53,8 @@ private:
 
     QDockWidget *timerDock;
     QDockWidget *moveDock;
+
+    QTextEdit *statusLog;
 
     QAction *newAction;
     QAction *saveAction;
