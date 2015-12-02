@@ -9,6 +9,8 @@
 #include "puzzlewidget.h"
 #include "newgame.h"
 
+#define TIME_FORMAT "hh:mm:ss"
+
 MainWindow::MainWindow()
 {
     puzzleWidget = new PuzzleWidget(this);
@@ -21,6 +23,10 @@ MainWindow::MainWindow()
     createDockWindows();
     createLog();
     createStatusBar();
+    puzzleTimer = new QTimer(this);
+    connect(puzzleTimer, SIGNAL(timeout()), this, SLOT(updateTime()));
+    connect(puzzleWidget, SIGNAL(gameStarted()), this, SLOT(timerOn()));
+    setTimer(true);
 
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(puzzleWidget);
@@ -178,10 +184,10 @@ void MainWindow::createDockWindows()
     timerDock = new QDockWidget(tr("Timer"), this);
     QLabel *timerImg = new QLabel();
     timerImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/timer.png")));
-    QLabel *timerClock = new QLabel("<h2>00:00:00</h2>");
+    timerText = new QLabel("<h2>00:00:00</h2>");
     QHBoxLayout *timerLayout = new QHBoxLayout();
     timerLayout->addWidget(timerImg);
-    timerLayout->addWidget(timerClock);
+    timerLayout->addWidget(timerText);
     QWidget *timerWidget = new QWidget();
     timerWidget->setLayout(timerLayout);
     timerDock->setWidget(timerWidget);
@@ -196,8 +202,6 @@ void MainWindow::createDockWindows()
     counterLabel = new QLabel("<h2>000</h2>");
     connect(puzzleWidget, SIGNAL(moveCounter(int)),
             this, SLOT(changeCounterText(int)));
-    connect(puzzleWidget, SIGNAL(gameStarted()),
-            this, SLOT(startPuzzleTimer()));
     QHBoxLayout *moveLayout = new QHBoxLayout();
     moveLayout->addWidget(moveImg);
     moveLayout->addWidget(counterLabel);
@@ -282,7 +286,39 @@ void MainWindow::changeCounterText(int counter)
     counterLabel->setText(str);
 }
 
-void MainWindow::startPuzzleTimer()
+void MainWindow::timerOn()
 {
-
+    timerAction->setChecked(true);
+    timerText->setEnabled(true);
+    puzzleTimer->start(1000);
 }
+void MainWindow::timerOff()
+{
+    timerAction->setChecked(false);
+    timerText->setEnabled(false);
+    setTimer(true);
+}
+
+void MainWindow::timerReset()
+{
+    setTimer(true);
+}
+void MainWindow::updateTime()
+{
+    QTime curTime = QTime::fromString(timerText->text(), TIME_FORMAT).addSecs(1);
+    setTimer(false, curTime);
+}
+
+void MainWindow::setTimer(const bool reset, const QTime time)
+{
+    static QString timeStr;
+    if (reset)
+    {
+        timerText->setText(trUtf8("00:00:00"));
+    }
+    else
+    {
+        timerText->setText(time.toString(TIME_FORMAT));
+    }
+}
+

@@ -2,10 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
-class QAction;
+#include <QTimer>
+#include <QTime>
 class PuzzleWidget;
-class QTime;
+class QAction;
 class QPixmap;
 class NewGame;
 class QTextEdit;
@@ -29,8 +29,11 @@ private slots:
     void changeFullScreenMode(bool screenMode);
     void changeFileToolBarVisibility(bool fileToolBarMode);
     void changeControlToolBarVisibility(bool controlToolBarMode);
-    void startPuzzleTimer();
     void changeCounterText(int counter);
+    void timerOn();
+    void timerOff();
+    void timerReset();
+    void updateTime();
 
 protected:
    void keyPressEvent(QKeyEvent *event);
@@ -43,6 +46,7 @@ private:
     void createDockWindows();
     void createLog();
     void createStatusBar();
+    void setTimer(const bool, const QTime = QTime());
 
     PuzzleWidget *puzzleWidget;
 
@@ -59,6 +63,7 @@ private:
     QDockWidget *moveDock;
 
     QLabel *counterLabel;
+    QLabel *timerText;
 
     QTextEdit *statusLog;
 
