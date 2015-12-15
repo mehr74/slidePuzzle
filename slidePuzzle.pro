@@ -1,7 +1,8 @@
 TEMPLATE = app
 TARGET = slidepuzzle
 
-QT  += widgets
+QT  += widgets \
+
 
 INCLUDEPATH += .
 DEPENDPATH += .
@@ -10,17 +11,17 @@ SOURCES += main.cpp \
     mainwindow.cpp \
     puzzlewidget.cpp \
     newgame.cpp \
-    savegame.cpp \
     loadgame.cpp \
-    movements.cpp
+    movements.cpp \
+    audio.cpp
 
 HEADERS += \
     mainwindow.h \
     puzzlewidget.h \
     newgame.h \
-    savegame.h \
     loadgame.h \
-    movements.h
+    movements.h \
+    audio.h
 
 RESOURCES += \
     slidepuzzle.qrc

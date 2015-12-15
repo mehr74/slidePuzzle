@@ -15,8 +15,8 @@ class PuzzleWidget : public QWidget
    Q_OBJECT
 public:
    PuzzleWidget(QWidget * Parent = 0,
-                const QSize WidgetSize = QSize(512, 384),
-                const QPoint PiecesNumber = QPoint(3, 3));
+                const QPoint PiecesNumber = QPoint(3, 3),
+                const QSize WidgetSize = QSize(512, 384));
    void addPieces(const QPixmap&image = QPixmap());
    // TODO : use an enum to specify the game difficulty
    void scramble(int diff = 0);

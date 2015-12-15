@@ -4,25 +4,30 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QTime>
+
 class PuzzleWidget;
 class QAction;
 class QPixmap;
 class NewGame;
 class QTextEdit;
 class QLabel;
+class QGridLayout;
+class QListWidget;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     MainWindow();
-    void appendToLog(QString *string)const;
+
 signals:
     void puzzleCompleted();
     void blockMoved();
 
 private slots:
-    void newGame();
+    void appendToLog(QString *string)const;
+    void newGame(QString fileName, int rows = 3, int cols = 5, int difficulty = 3);
+    void openNewGameDialog();
     void saveGame();
     void setTimerVisible();
     void aboutQt();
@@ -50,6 +55,8 @@ private:
 
     PuzzleWidget *puzzleWidget;
 
+    NewGame *newGameDialog;
+
     QMenu *fileMenu;
     QMenu *controlMenu;
     QMenu *viewMenu;
@@ -59,8 +66,7 @@ private:
     QToolBar *fileToolBar;
     QToolBar *controlToolBar;
 
-    QDockWidget *timerDock;
-    QDockWidget *moveDock;
+    QGridLayout *grid;
 
     QLabel *counterLabel;
     QLabel *timerText;
@@ -68,6 +74,8 @@ private:
     QTextEdit *statusLog;
 
     QTimer *puzzleTimer;
+
+    QListWidget *listWidget;
 
     QAction *newAction;
     QAction *saveAction;

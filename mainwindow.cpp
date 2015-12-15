@@ -15,6 +15,7 @@ MainWindow::MainWindow()
 {
     puzzleWidget = new PuzzleWidget(this);
     puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
+    grid = new QGridLayout;
 
     createActions();
     createMenus();
@@ -28,11 +29,10 @@ MainWindow::MainWindow()
     connect(puzzleWidget, SIGNAL(gameStarted()), this, SLOT(timerOn()));
     setTimer(true);
 
-    QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(puzzleWidget);
-    layout->addWidget(statusLog);
+    grid->addWidget(puzzleWidget, 0, 0);
+    grid->addWidget(statusLog, 1, 0,1,2);
     QWidget *widget = new QWidget;
-    widget->setLayout(layout);
+    widget->setLayout(grid);
     setCentralWidget(widget);
 }
 
@@ -43,7 +43,7 @@ void MainWindow::createActions()
     newAction->setShortcut(QKeySequence::New);
     newAction->setStatusTip(tr("Start a new game"));
     connect(newAction, SIGNAL(triggered()),
-            this, SLOT(newGame()));
+            this, SLOT(openNewGameDialog()));
 
     saveAction = new QAction(tr("&Save game"), this);
     saveAction->setIcon(QIcon(":/icons/images/save.png"));
@@ -128,6 +128,7 @@ void MainWindow::createActions()
     aboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
     aboutQtAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/info.png"));
     connect(aboutQtAction, SIGNAL(triggered()), this, SLOT(aboutQt()));
+
 }
 
 void MainWindow::createMenus()
@@ -176,12 +177,13 @@ void MainWindow::createToolBars()
 
 void MainWindow::createContextMenu()
 {
-
+    listWidget = new QListWidget(this);
+    grid->addWidget(listWidget, 0,1);
 }
 
 void MainWindow::createDockWindows()
 {
-    timerDock = new QDockWidget(tr("Timer"), this);
+    QDockWidget *timerDock = new QDockWidget(tr("Timer"), this);
     QLabel *timerImg = new QLabel();
     timerImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/timer.png")));
     timerText = new QLabel("<h2>00:00:00</h2>");
@@ -195,7 +197,7 @@ void MainWindow::createDockWindows()
     timerDock->setTitleBarWidget(new QLabel("<h2>Timer</h2>"));
     addDockWidget(Qt::RightDockWidgetArea, timerDock);
 
-    moveDock = new QDockWidget(tr("Move"), this);
+    QDockWidget *moveDock = new QDockWidget(tr("Move"), this);
     moveDock->setAllowedAreas(Qt::LeftDockWidgetArea);
     QLabel *moveImg = new QLabel();
     moveImg->setPixmap(QPixmap(QString::fromUtf8(":/icons/images/move.png")));
@@ -233,10 +235,22 @@ void MainWindow::aboutQt()
     QMessageBox::aboutQt(this);
 }
 
-void MainWindow::newGame()
+void MainWindow::openNewGameDialog()
 {
-    NewGame dialog(this);
-    dialog.exec();
+    newGameDialog = new NewGame(this);
+    if(newGameDialog->exec())
+    {
+        QString fileStr = newGameDialog->fileName;
+        newGame(fileStr, newGameDialog->rowSpinBox->value(),newGameDialog->columnSpinBox->value());
+    }
+}
+
+void MainWindow::newGame(QString fileName, int rows, int cols, int difficulty)
+{
+    puzzleWidget = new PuzzleWidget(this, *new QPoint(rows, cols));
+    puzzleWidget->addPieces(QPixmap(fileName));
+    grid->addWidget(puzzleWidget, 0, 0);
+
 }
 
 void MainWindow::changeFullScreenMode(bool screenMode)

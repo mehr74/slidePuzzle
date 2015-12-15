@@ -5,7 +5,7 @@
 #include "puzzlewidget.h"
 #include "movements.h"
 
-PuzzleWidget::PuzzleWidget(QWidget *parent, const QSize size, const QPoint pieceNum)
+PuzzleWidget::PuzzleWidget(QWidget *parent, const QPoint pieceNum, const QSize size)
     : QWidget(parent)
 {
     isGameStarted = false;
