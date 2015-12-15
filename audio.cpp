@@ -1,7 +1,13 @@
+#include <qsound.h>
 #include "audio.h"
-#include <phonon/audiodataoutput.h>
-#include <phonon/mediaobject.h>
-#include <phonon/mediasource.h>
-#include <phonon/videowidget.h>
+Audio::Audio()
+{
+    background = new QSound(":/sounds/sounds/background.wav");
+}
 
-using namespace Phonon;
+void Audio::playBackgroundMusic()
+{
+    background->play();
+}
+
+

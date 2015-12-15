@@ -5,10 +5,11 @@
 #include "puzzlewidget.h"
 #include "movements.h"
 
-PuzzleWidget::PuzzleWidget(QWidget *parent, const QPoint pieceNum, const QSize size)
+PuzzleWidget::PuzzleWidget(QWidget *parent, const QPoint pieceNum, int difficulty, const QSize size)
     : QWidget(parent)
 {
     isGameStarted = false;
+    diff = difficulty;
     setAcceptDrops(true);
     this->relation = pieceNum;
     pnt.setX(size.width()/relation.x());
@@ -68,7 +69,7 @@ void PuzzleWidget::paintEvent(QPaintEvent *event)
     painter.end();
 }
 
-void PuzzleWidget::scramble(int diff)
+void PuzzleWidget::scramble()
 {
     if(isGameStarted)
         return;
@@ -77,7 +78,7 @@ void PuzzleWidget::scramble(int diff)
     int maxid = relation.x()*relation.y() - 1;
     QRect buf;
     int freeRect = qrand()%maxid;
-    int i = (int)diff * diff * diff* 10 + qrand() % 10 + 5;
+    int i = (int)diff * diff * diff* 10000 + qrand() % 10 + 5;
     while (i)
     {
         switch(int(qrand()%4))

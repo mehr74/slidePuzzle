@@ -8,13 +8,16 @@
 #include "mainwindow.h"
 #include "puzzlewidget.h"
 #include "newgame.h"
+#include "audio.h"
 
 #define TIME_FORMAT "hh:mm:ss"
 
 MainWindow::MainWindow()
 {
     puzzleWidget = new PuzzleWidget(this);
-    puzzleWidget->addPieces(QPixmap(QString::fromUtf8("/home/mehrshad/spongebob.jpg")));
+    puzzleWidget->addPieces(QPixmap(QString::fromUtf8(":/images/images/spongebob.jpg")));
+    Audio puzzleSound;
+    puzzleSound.playBackgroundMusic();
     grid = new QGridLayout;
 
     createActions();
@@ -98,18 +101,22 @@ void MainWindow::createActions()
 
     showLogAction = new QAction(tr("Show Log"),this);
     showLogAction->setCheckable(true);
+    showLogAction->setChecked(true);
 
     statusBarAction = new QAction(tr("Status bar"), this);
     statusBarAction->setCheckable(true);
 
     soundAction = new QAction(tr("Sound"), this);
     soundAction->setCheckable(true);
+    soundAction->setChecked(true);
 
     timerAction = new QAction(tr("timer"), this);
     timerAction->setCheckable(true);
+    timerAction->setChecked(true);
 
     musicAction = new QAction(tr("Music"), this);
     musicAction->setCheckable(true);
+    musicAction->setChecked(true);
 
     redoAction = new QAction(tr("Redo"), this);
     redoAction->setIcon(QIcon("/home/mehrshad/slidePuzzle/images/redo.png"));
@@ -241,13 +248,22 @@ void MainWindow::openNewGameDialog()
     if(newGameDialog->exec())
     {
         QString fileStr = newGameDialog->fileName;
-        newGame(fileStr, newGameDialog->rowSpinBox->value(),newGameDialog->columnSpinBox->value());
+        int diff = 0;
+        if(newGameDialog->mediumRadio->isChecked())
+        {
+            diff = 1;
+        }
+        else if(newGameDialog->hardRadio->isChecked())
+        {
+            diff = 2;
+        }
+        newGame(fileStr, newGameDialog->rowSpinBox->value(),newGameDialog->columnSpinBox->value(), diff);
     }
 }
 
 void MainWindow::newGame(QString fileName, int rows, int cols, int difficulty)
 {
-    puzzleWidget = new PuzzleWidget(this, *new QPoint(rows, cols));
+    puzzleWidget = new PuzzleWidget(this, *new QPoint(rows, cols), difficulty);
     puzzleWidget->addPieces(QPixmap(fileName));
     grid->addWidget(puzzleWidget, 0, 0);
 

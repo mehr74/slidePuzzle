@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = slidepuzzle
 
 QT  += widgets \
+        multimedia
 
 
 INCLUDEPATH += .
@@ -27,4 +28,5 @@ RESOURCES += \
     slidepuzzle.qrc
 
 FORMS += \
-    newgame.ui
+    newgame.ui \
+    help.ui

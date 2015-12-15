@@ -8,12 +8,15 @@ NewGame::NewGame(QWidget *parent)
 
     mediumRadio->setChecked(true);
     columnSpinBox->setRange(2, 99);
-    columnSpinBox->setValue(3);
+    columnSpinBox->setValue(4);
     rowSpinBox->setRange(2, 99);
-    rowSpinBox->setValue(3);
+    rowSpinBox->setValue(4);
     secondaryGroupBox->hide();
     tertiaryGroupBox->hide();
     fileNameLabel->hide();
+    classicType->setChecked(true);
+
+    fileName = QString(":/images/images/classic.png");
 
     connect(browseButton, SIGNAL(clicked()), this, SLOT(imageBrowse()));
     connect(columnSpinBox, SIGNAL(valueChanged(int)), this, SLOT(setColumn(int)));

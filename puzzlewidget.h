@@ -16,10 +16,11 @@ class PuzzleWidget : public QWidget
 public:
    PuzzleWidget(QWidget * Parent = 0,
                 const QPoint PiecesNumber = QPoint(3, 3),
+                int difficulty= 0,
                 const QSize WidgetSize = QSize(512, 384));
    void addPieces(const QPixmap&image = QPixmap());
    // TODO : use an enum to specify the game difficulty
-   void scramble(int diff = 0);
+   void scramble();
       void keyPressed(int key);
 
 public slots:
@@ -52,6 +53,7 @@ private:
    QSize *widgetSize;
    Movements *history;
    bool isGameStarted;
+   int diff;
    int moves;
 };
 

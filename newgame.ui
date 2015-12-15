@@ -18,37 +18,7 @@
     <normaloff>:/icons/images/new.png</normaloff>:/icons/images/new.png</iconset>
   </property>
   <layout class="QGridLayout">
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="primaryGroupBox">
-     <property name="title">
-      <string>Game &amp;difficulty</string>
-     </property>
-     <layout class="QGridLayout">
-      <item row="1" column="2">
-       <widget class="QRadioButton" name="hardRadio">
-        <property name="text">
-         <string>&amp;Hard</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="easyRadio">
-        <property name="text">
-         <string>Eas&amp;y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QRadioButton" name="mediumRadio">
-        <property name="text">
-         <string>Medi&amp;um</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="1" rowspan="2">
+   <item row="0" column="1" rowspan="5">
     <layout class="QVBoxLayout">
      <item>
       <widget class="QPushButton" name="okButton">
@@ -92,35 +62,12 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>181</width>
-       <height>31</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="0">
+   <item row="5" column="0">
     <widget class="QGroupBox" name="secondaryGroupBox">
      <property name="title">
       <string>Game &amp;settings</string>
      </property>
      <layout class="QGridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="settingsRowLabel">
-        <property name="text">
-         <string>Row</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="settingsColumnLabel">
         <property name="text">
@@ -133,6 +80,13 @@
       </item>
       <item row="1" column="1">
        <widget class="QSpinBox" name="columnSpinBox"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="settingsRowLabel">
+        <property name="text">
+         <string>Row</string>
+        </property>
+       </widget>
       </item>
       <item row="0" column="2">
        <spacer>
@@ -163,7 +117,37 @@
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="primaryGroupBox">
+     <property name="title">
+      <string>Game &amp;difficulty</string>
+     </property>
+     <layout class="QGridLayout">
+      <item row="1" column="2">
+       <widget class="QRadioButton" name="hardRadio">
+        <property name="text">
+         <string>&amp;Hard</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="easyRadio">
+        <property name="text">
+         <string>Eas&amp;y</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="mediumRadio">
+        <property name="text">
+         <string>Medi&amp;um</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="6" column="0">
     <widget class="QGroupBox" name="tertiaryGroupBox">
      <property name="title">
       <string>Game &amp;image</string>
@@ -192,6 +176,42 @@
       </item>
      </layout>
     </widget>
+   </item>
+   <item row="1" column="0" rowspan="2">
+    <widget class="QGroupBox" name="additionalGroupBox">
+     <property name="title">
+      <string>Type</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="classicType">
+        <property name="text">
+         <string>Classic</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="customType">
+        <property name="text">
+         <string>Custom</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/images">
         <file>images/background.jpg</file>
+        <file>images/spongebob.jpg</file>
+        <file>images/classic.png</file>
     </qresource>
     <qresource prefix="/icons">
         <file>images/exit.png</file>
@@ -14,5 +16,8 @@
         <file>images/undo.png</file>
         <file>images/timer.png</file>
         <file>images/move.png</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>sounds/background.wav</file>
     </qresource>
 </RCC>
